@@ -1,0 +1,29 @@
+# =============================================================================
+# requirements.txt  —  Dependencias del Hito 1 (esqueleto funcional)
+# =============================================================================
+# Instalar con:  pip install -r requirements.txt
+# Versiones fijadas para reproducibilidad del TFG.
+# =============================================================================
+
+# --- Acceso a exchanges de criptomonedas ------------------------------------
+ccxt==4.3.89                 # Biblioteca unificada para APIs de exchanges (Binance, Kraken…)
+
+# --- Manipulación y análisis de datos ----------------------------------------
+pandas==2.2.2
+numpy==1.26.4
+
+# --- Indicadores técnicos ----------------------------------------------------
+pandas-ta==0.3.14b0          # Indicadores técnicos sobre DataFrames de pandas (RSI, MACD, BB, EMA, ATR)
+
+# --- Configuración -----------------------------------------------------------
+PyYAML==6.0.1                # Lectura de config.yaml
+
+# --- Visualización (para notebooks de exploración) ---------------------------
+matplotlib==3.9.0
+
+# --- Testing -----------------------------------------------------------------
+pytest==8.2.2
+pytest-cov==5.0.0            # Cobertura de tests
+
+# --- Utilidades --------------------------------------------------------------
+python-dateutil==2.9.0       # Parsing de fechas en historical_loader

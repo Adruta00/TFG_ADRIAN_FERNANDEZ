@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+*.egg-info/
+
+# Datos (no versionar datos crudos)
+data/raw/
+data/processed/
+results/
+
+# Entornos
+.env
+*.env
+
+# IDE
+.vscode/
+.idea/
+*.DS_Store
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/
