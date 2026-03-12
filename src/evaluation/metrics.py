@@ -95,11 +95,12 @@ def win_rate(trades_df: pd.DataFrame) -> float:
     float
         Win rate entre 0.0 y 1.0. Ej: 0.55 = 55% de trades ganadores.
     """
+    # Si el DataFrame está vacío o no tiene la columna 'exit_time', retornar 0.0
+    if trades_df.empty or 'exit_time' not in trades_df.columns:
+        return 0.0
     closed = trades_df[trades_df["exit_time"].notna()]
-
     if closed.empty:
         return 0.0
-
     winners = (closed["pnl"] > 0).sum()
     return float(round(winners / len(closed), 4))
 
@@ -136,13 +137,15 @@ def profit_factor(trades_df: pd.DataFrame) -> float:
     Profit Factor = suma de ganancias brutas / suma de pérdidas brutas (absoluta).
     > 1.0 → el sistema gana más de lo que pierde en total.
     """
-    closed   = trades_df[trades_df["exit_time"].notna()]
-    gains    = closed[closed["pnl"] > 0]["pnl"].sum()
-    losses   = abs(closed[closed["pnl"] < 0]["pnl"].sum())
-
+    if trades_df.empty or 'exit_time' not in trades_df.columns:
+        return 0.0
+    closed = trades_df[trades_df["exit_time"].notna()]
+    if closed.empty:
+        return 0.0
+    gains = closed[closed["pnl"] > 0]["pnl"].sum()
+    losses = abs(closed[closed["pnl"] < 0]["pnl"].sum())
     if losses == 0:
         return float("inf") if gains > 0 else 0.0
-
     return float(round(gains / losses, 4))
 
 
