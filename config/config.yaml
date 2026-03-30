@@ -13,14 +13,14 @@ exchange:
   fees: 0.001                # Comisión por operación (0.1% = Binance spot maker/taker)
 
 data:
-  start_date: "2023-01-01"   # Inicio del período histórico (YYYY-MM-DD)
-  end_date:   "2024-01-01"   # Fin del período histórico   (YYYY-MM-DD)
+  start_date: "2024-01-01"   # Inicio del período histórico (YYYY-MM-DD)
+  end_date:   "2025-12-01"   # Fin del período histórico   (YYYY-MM-DD)
   raw_path:      "data/raw"
   processed_path: "data/processed"
 
 backtesting:
-  initial_capital: 10000.0   # Capital inicial en USDT
-  position_size:   0.95      # Fracción del capital disponible usada por operación
+  initial_capital: 2000.0   # Capital inicial en USDT
+  position_size:   0.15      # Fracción del capital disponible usada por operación
 
 indicators:
   sma_fast: 20               # Período de la media rápida (señal de cruce)
@@ -37,3 +37,24 @@ indicators:
 results:
   output_path: "results"
   log_level: "INFO"          # DEBUG | INFO | WARNING | ERROR
+
+# =============================================================================
+# Sección ML — usada a partir del Hito 2
+# =============================================================================
+ml:
+  window_size:      60        # Número de velas pasadas que forman cada muestra
+  target_horizon:   24         # Velas hacia el futuro para calcular el retorno objetivo
+  threshold_pct:    0.003     # Umbral mínimo de retorno para etiquetar BUY/SELL (0.1%)
+                              # NOTA: 0.3% era demasiado estricto para 5h → muy pocos BUY en train.
+                              # 0.1% genera una distribución BUY/SELL/HOLD más equilibrada.
+  test_size:        0.20      # Fracción del dataset reservada para test (20%)
+  n_splits:         8         # Pliegues de TimeSeriesSplit para validación cruzada
+
+  # Parámetros del Random Forest
+  rf_n_estimators:    500     # Más árboles = predicciones más estables
+  rf_max_depth:       12       # Menos profundidad = menos sobreajuste
+  rf_min_samples_leaf: 5     # Más muestras por hoja = más regularización
+  rf_random_state:    42
+
+  # Ruta donde guardar los modelos entrenados
+  models_path: "results/models"

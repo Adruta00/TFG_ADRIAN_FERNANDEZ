@@ -13,6 +13,7 @@ Esto facilita añadir, quitar o modificar indicadores sin tocar el resto del có
 """
 
 import logging
+
 import pandas as pd
 import pandas_ta_classic as ta
 
