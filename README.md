@@ -127,7 +127,7 @@ crypto_trading_tfg/
 | Hito | Estado | Descripción |
 |------|--------|-------------|
 | **Hito 1** | ✅ Completo | Esqueleto funcional: datos → indicadores → backtest → métricas |
-| **Hito 2** | ⏳ Pendiente | Random Forest / XGBoost como estrategia ML |
+| **Hito 2** | ✅ Completo | Random Forest + Baseline como estrategia ML (feature engineering, anti-leakage, save/load) |
 | **Hito 3** | ⏳ Pendiente | Modelo LSTM |
 | **Hito 4** | ⏳ Pendiente | Simulación en tiempo real (paper trading) |
 
@@ -139,3 +139,60 @@ crypto_trading_tfg/
 - Los trades ejecutados se guardan en `results/trades_history.csv`.
 - La curva de equity se guarda en `results/equity_curve.csv`.
 - Para cambiar el par o el período, edita únicamente `config/config.yaml`.
+
+---
+
+## 🚀 Ejecutar el sistema (Hito 2)
+
+```bash
+# Backtest con Random Forest (entrena y compara vs rule-based)
+python main.py --mode backtest --model random_forest
+
+# Backtest con baseline (rule-based envuelto en interfaz ML)
+python main.py --mode backtest --model baseline
+
+# Backtest original rule-based (sin cambios del Hito 1)
+python main.py --mode backtest --model rule_based
+
+# Opciones combinadas
+python main.py --mode backtest --model random_forest --force-download
+```
+
+**Salida esperada con `--model random_forest`:**
+```
+────────────────────────────────────────────────────────────
+  HITO 2 — Pipeline ML  |  modelo: random_forest
+────────────────────────────────────────────────────────────
+  Top 10 features más importantes:
+    rsi_t-0                           0.0821
+    atr_t-0                           0.0754
+    ...
+
+════════════════════════════════════════════════════════════
+  📊  COMPARATIVA: RANDOM_FOREST vs RULE-BASED
+════════════════════════════════════════════════════════════
+  Métrica                   RANDOM_FOREST    RULE_BASED
+────────────────────────────────────────────────────────────
+  Capital final (USDT)        10,234.56       9,876.43
+  PnL %                          +2.35%          -1.24%
+  Sharpe Ratio                   0.3421          0.1123
+  Max Drawdown                  -8.45%         -12.31%
+  Win Rate                       54.17%          41.67%
+  Total Trades                       24              12
+════════════════════════════════════════════════════════════
+```
+
+---
+
+## 🧪 Ejecutar los tests (Hito 2)
+
+```bash
+# Solo los tests del Hito 2
+pytest tests/test_hito2.py -v
+
+# Todos los tests (Hito 1 + Hito 2)
+pytest tests/ -v
+
+# Con cobertura
+pytest tests/ -v --cov=src --cov-report=term-missing
+```

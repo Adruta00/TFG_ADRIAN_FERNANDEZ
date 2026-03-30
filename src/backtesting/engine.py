@@ -82,6 +82,14 @@ class BacktestEngine:
         n_sell     = 0
         n_hold     = 0
 
+        # Detecta si el DataFrame contiene una columna 'features' pre-computada.
+        # Si existe, se loggea como información pero no cambia la interfaz:
+        # generate_signal(row) sigue recibiendo la fila completa, y MLStrategy
+        # extrae el timestamp para buscar su predicción en predictions_map.
+        has_features_col = "features" in df.columns
+        if has_features_col:
+            logger.debug("Engine detectó columna 'features' en el DataFrame (modo ML activo).")
+
         logger.info(
             "Iniciando backtest | %d velas | estrategia: %s",
             n_rows, strategy,
